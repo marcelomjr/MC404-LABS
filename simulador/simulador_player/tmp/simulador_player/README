@@ -1,0 +1,22 @@
+
+COMPILAR INFRAESTRUTURA
+
+Todos os passos para compilar a infraestrutura estão no arquivo "build.sh".
+Não se esqueça de setar as variaveis locais (como em build.sh)
+em relação aos caminhos da sua máquina.
+
+-------------------------------------------------------
+
+EXECUTAR:
+
+Abra dois terminais dentro da pasta raiz da infraestrutura.
+
+- No primeiro execute o player:
+  $ player worlds_mc404/simple.cfg
+
+
+- No segundo execute o código de usuario para controlar o robô:
+  $ export LD_LIBRARY_PATH=/home/julianomb/usr/systemC/lib-linux64
+  $ armv7/build/src/armsim --rom=dumboot/dumboot.bin --sd=test_userASM/disk.img
+
+
