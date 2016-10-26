@@ -1,4 +1,0 @@
-#define iMX53_MODEL
-#define SYSTEM_MODEL
-#define UNALIGNED_ACCESS_SUPPORT
-
