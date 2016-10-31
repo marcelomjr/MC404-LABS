@@ -1,11 +1,17 @@
-seta_variaveis:
-	source /home/specg12-1/mc404/simulador/set_path.sh
+monta_programa:
+	arm-eabi-as modelo.s -o objeto.o
 
-monta_programa: seta_variaveis
-	arm-eabi-as arquivo_de_entrada.s -o arquivo_de_saida.o
+liga_objetos: monta_programa
+	arm-eabi-ld objeto.o -o executavel.exe -Ttext=0x77802000 -Tdata=0x77802050
 
-liga_objetos: monta_programa:
-	arm-eabi-ld arquivo_de_entrada.o -o arquivo_de_saida_do_ligador -Ttext=0x77802000 -Tdata=0x77802050
+cria_imagem: liga_objetos
+	mksd.sh --so /home/specg12-1/mc404/simulador/dummyos.elf --user executavel.exe
+
+simulacao: cria_imagem
+	rm -rf *.o
+	arm-sim --rom=/home/specg12-1/mc404/simulador/dumboot.bin --sd=disk.img
+
+
 
 
 
