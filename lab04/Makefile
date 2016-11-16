@@ -1,26 +1,34 @@
-DUMBOOT = /home/mc404/usr/bin/dumboot.bin
-OS = /home/mc404/simuladorfromspecg/simulador/dummyos.elf
+ASSEMBLER = arm-eabi-as
+LINKER = arm-eabi-ld
+MKSD = mksd.sh --so
+DUMBOOT = /home/specg12-1/mc404/simulador/dumboot.bin # /home/mc404/usr/bin/dumboot.bin (VM)
+OS = /home/specg12-1/mc404/simulador/dummyos.elf # /home/mc404/simuladorfromspecg/simulador/dummyos.elf (VM)
+ARMSIMULATOR = arm-sim # ${ARMSIM} (VM)
+
 TEXTADDR = 0x77802000 # OS will load user application code at this address
-DATAADDR = 0x77802050 # various data item
+DATAADDR = 0x77802800 # various data item
 
 monta_programa:
-	arm-eabi-as lab04.s -o objeto.o
+	$(ASSEMBLER) lab04.s -o object.o
 
 liga_objetos: monta_programa
-	arm-eabi-ld objeto.o -o executavel.exe -Ttext=$(TEXTADDR) -Tdata=$(DATAADDR)
+	$(LINKER) object.o -o executable.x -Ttext=$(TEXTADDR) -Tdata=$(DATAADDR)
 
 cria_imagem: liga_objetos
-	mksd.sh --so $(OS) --user executavel.exe
+	$(MKSD) $(OS) --user executable.x
+
+clean:
+	rm -rf *.o
+	rm -rf *.x
 
 simulacao: cria_imagem
-	rm -rf *.o
-	rm -rf *.exe
-	${ARMSIM} --rom=$(DUMBOOT) --sd=disk.img
+	$(ARMSIMULATOR) --rom=$(DUMBOOT) --sd=disk.img
 
 simulacao_gdb:
-	arm-eabi-as lab04.s -g -o object.o
-	arm-eabi-ld object.o -g -o arquivo_de_saida_do_ligador -Ttext=$(TEXTADDR) -Tdata=$(DATAADDR)
-	${ARMSIM} --rom=DUMBOOT --sd=disk.img -g
+	$(ASSEMBLER) lab04.s -g -o object.o
+	$(LINKER) object.o -g -o executable.x -Ttext=$(TEXTADDR) -Tdata=$(DATAADDR)
+	$(MKSD) $(OS) --user executable.x
+	$(ARMSIMULATOR) --rom=$(DUMBOOT) --sd=disk.img -g
 
 roda_gdb:
-	arm-eabi-gdb executavel.exe
+	arm-eabi-gdb executable.x
