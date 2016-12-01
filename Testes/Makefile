@@ -4,13 +4,13 @@ LINKER = arm-eabi-ld
 
 # IC Computer
 #source /home/specg12-1/mc404/simulador/set_path.sh
-MKSD = mksd.sh
-OS = /home/specg12-1/mc404/simulador/dummyos.elf
-DUMBOOT = /home/specg12-1/mc404/simulador/dumboot.bin
-ARMSIM = arm-sim
-GDB = arm-eabi-gdb
+ MKSD = mksd.sh
+ OS = /home/specg12-1/mc404/simulador/dummyos.elf
+ DUMBOOT = /home/specg12-1/mc404/simulador/dumboot.bin
+ ARMSIM = arm-sim
+ GDB = arm-eabi-gdb
 
-# ARM Simulator
+# ARM SimulatorG
 #GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
 
 GDB_FLAG = -g
