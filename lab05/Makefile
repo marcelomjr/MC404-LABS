@@ -1,4 +1,4 @@
-SOURCE = read.s
+SOURCE = lab05.s
 ARM_CC = arm-eabi-as # cross compiling toolchain
 LINKER = arm-eabi-ld
 
