@@ -1,21 +1,34 @@
 	@ Global symbol
-        .global dummy_routine1
+    .global set_speed_motor
 
 	.align 4
 
-#void set_speed_motor(unsigned char speed, unsigned char id)
+@ set_speed_motor sets motor speed. 
+@ Parameters:
+@ 	r0: speed (unsigned char) (Only the last 6 bits are used)
+@	r1: id (unsigned char) (0 for right motor, 1 for left motor)
 set_speed_motor:
-    stmfd sp!, {r4-r6, r10-r11, lr}
-	mov   r4,  #0
-	mov   r5,  #1
-	mov   r6,  #2
-	mov   r10, #3
-	mov   r11, #4
-    ldmfd sp!, {r4-r6, r10-r11, pc} @ Restore the registers and return
+	stmfd sp!, {r4-r11, lr}
+	cmp r1, #0
+	beq motor0
 
-dummy_routine2:
-        stmfd sp!, {r11, lr}  @ Save the callee-save registers
-		              @ and the return address.
-	mov   r11, #4
-        ldmfd sp!, {r11, pc}  @ Restore the registers and return
+	cmp r1, #1
+	beq motor1
+	b fim_set_motor
 
+motor0:
+	mov r7, #126
+p0:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+	svc 0x0
+p0d:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+	b fim_set_motor
+
+motor1:
+	mov r7, #127
+p1:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2	
+	svc 0x0
+p1d:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+	b fim_set_motor
+
+fim_set_motor:
+	ldmfd sp!, {r4-r11, lr}
