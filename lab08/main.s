@@ -19,13 +19,9 @@ _start:
 	stmfd	sp!, {fp, lr}
 	add	fp, sp, #4
 	sub	sp, sp, #64
-	mov	r0, #35
-	mov	r1, #1
-	bl	set_speed_motor
-.L2:
-	mov	r0, #0
-	mov	r1, #1
-	bl	set_speed_motor
+	mov	r0, #55
+	mov	r1, #0
+	bl	set_speed_motors
 	sub	sp, fp, #4
 	ldmfd	sp!, {fp, pc}
 	.size	_start, .-_start
@@ -41,22 +37,22 @@ delay:
 	sub	sp, sp, #12
 	mov	r3, #0
 	str	r3, [fp, #-8]
-	b	.L5
-.L6:
+	b	.L4
+.L5:
 	ldr	r3, [fp, #-8]
 	add	r3, r3, #1
 	str	r3, [fp, #-8]
-.L5:
+.L4:
 	ldr	r2, [fp, #-8]
-	ldr	r3, .L8
+	ldr	r3, .L7
 	cmp	r2, r3
-	ble	.L6
+	ble	.L5
 	add	sp, fp, #0
 	ldmfd	sp!, {fp}
 	bx	lr
-.L9:
-	.align	2
 .L8:
+	.align	2
+.L7:
 	.word	9999
 	.size	delay, .-delay
 	.ident	"GCC: (GNU) 4.4.3"

@@ -1,17 +1,21 @@
-SOURCE = lab07.s
+SOURCE = motors
 ARM_CC = arm-eabi-as # cross compiling toolchain
 LINKER = arm-eabi-ld
 
 # IC Computer
-#source /home/specg12-1/mc404/simulador/set_path.sh
- #MKSD = mksd.sh
- #OS = /home/specg12-1/mc404/simulador/dummyos.elf
- #DUMBOOT = /home/specg12-1/mc404/simulador/dumboot.bin
- #ARMSIM = arm-sim
- #GDB = arm-eabi-gdb
+#Configuração de variáveis de ambiente:
+#source /home/specg12-1/mc404/simulador/set_path_player.sh
+MKSD = mksd.sh
+OS = /home/specg12-1/mc404/simulador/simulador_player/bin/knrl
+DUMBOOT = /home/specg12-1/mc404/simulador/simulador_player/bin/dumboot.bin
+ARMSIM = arm-sim
+GDB = arm-eabi-gdb
+PLAYER = player
+PLAYER_WORLDS = /home/specg12-1/mc404/simulador/simulador_player/worlds_mc404/
+ARMSIM_PLAYER = armsim_player
 
 # ARM SimulatorG
-GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
+#GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
 
 #GDB_FLAG = -g
 # target remote localhost:5000
@@ -19,14 +23,14 @@ GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
 TEXTADDR = 0x77802000 # OS will load user application code at this address
 DATAADDR = 0x77802800 # various data item
 
-assembly: $(SOURCE)
-	$(ARM_CC) $(SOURCE) $(GDB_FLAG) -o object.o
+assembly: 
+	$(ARM_CC) $(SOURCE).s $(GDB_FLAG) -o $(SOURCE).o
 
 link: assembly
-	$(LINKER) object.o $(GDB_FLAG) -o executable.exe -Ttext=$(TEXTADDR) -Tdata=$(DATAADDR)
+	$(LINKER) $(SOURCE).o $(GDB_FLAG) -o $(SOURCE).exe -Ttext=$(TEXTADDR)
 
 image_creation: link
-	$(MKSD) --so $(OS) --user executable.exe
+	$(MKSD) --so $(OS) --user $(SOURCE).exe
 
 simulation: image_creation
 	$(ARMSIM_PLAYER) --rom=$(DUMBOOT) --sd=disk.img $(GDB_FLAG)

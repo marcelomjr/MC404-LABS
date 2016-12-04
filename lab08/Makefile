@@ -2,17 +2,20 @@ ARM_CC = arm-eabi-as # cross compiling toolchain
 LINKER = arm-eabi-ld
 
 # IC Computer
-#source /home/specg12-1/mc404/simulador/set_path.sh
- #MKSD = mksd.sh
- #OS = /home/specg12-1/mc404/simulador/dummyos.elf
- #DUMBOOT = /home/specg12-1/mc404/simulador/dumboot.bin
- #ARMSIM = arm-sim
- #GDB = arm-eabi-gdb
+#source /home/specg12-1/mc404/simulador/set_path_player.sh
+ MKSD = mksd.sh
+ OS = /home/specg12-1/mc404/simulador/simulador_player/bin/knrl
+ DUMBOOT = /home/specg12-1/mc404/simulador/simulador_player/bin/dumboot.bin
+ ARMSIM = arm-sim
+ GDB = arm-eabi-gdb
+ PLAYER = player
+ PLAYER_WORLDS = /home/specg12-1/mc404/simulador/simulador_player/worlds_mc404/
+ ARMSIM_PLAYER = armsim_player
 
 # ARM SimulatorG
-GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
+#GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
 
-GDB_FLAG = -g
+#GDB_FLAG = -g
 # target remote localhost:5000
 
 TEXTADDR = 0x77802000 # OS will load user application code at this address
