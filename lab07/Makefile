@@ -1,4 +1,4 @@
-SOURCE = lab06.s
+SOURCE = lab07.s
 ARM_CC = arm-eabi-as # cross compiling toolchain
 LINKER = arm-eabi-ld
 
@@ -13,7 +13,7 @@ LINKER = arm-eabi-ld
 # ARM SimulatorG
 GDB = /home/mc404/simuladorfromspecg/simulador/bin/arm-eabi-gdb
 
-GDB_FLAG = -g
+#GDB_FLAG = -g
 # target remote localhost:5000
 
 TEXTADDR = 0x77802000 # OS will load user application code at this address
@@ -29,7 +29,10 @@ image_creation: link
 	$(MKSD) --so $(OS) --user executable.exe
 
 simulation: image_creation
-	$(ARMSIM) --rom=$(DUMBOOT) --sd=disk.img $(GDB_FLAG)
+	$(ARMSIM_PLAYER) --rom=$(DUMBOOT) --sd=disk.img $(GDB_FLAG)
+
+run_player:
+	$(PLAYER) $(PLAYER_WORLDS)/simple.cfg # run this first in another window
 
 gdb:
 	$(GDB) executable.exe

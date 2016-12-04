@@ -1,12 +1,3 @@
-@ Este codigo le um valor da entrada padrao, o multiplica por 2 e
-@ imprime o resultado na saida padrao.
-@ O valor a ser multiplicado sera recebido da entrada padrao na forma binaria.
-@ O valor binario devera conter EXATAMENTE 16 digitos. 
-@   ex:  2  = 0000000000000010
-@
-@ A resposta da entrada (o seu dobro) sera mostrado na saida padrao tambem no formato de 
-@ uma string binaria de 16 digitos.
-@
 
 .text                         @ Muda o ponto de montagem para a secao de codigo (text)
 
@@ -14,7 +5,7 @@
 
 .align 4                      @ Alinha a posicao atual de montagem em um endereco multiplo de 4
 _start:                       @ ponto de entrada do programa.
-	
+    
 @ -- le uma sequencia de 16 bytes da entrada padrao
 @ -- e armazena no buffer identificado pelo rotulo string.
 
@@ -44,34 +35,27 @@ skip:
         cmp r2, #16           @ compara r2 com o tamanho da string binaria
         blt loop_c            @ se ainda esta com um valor menor que o tamanho da string
 
-@ -- multiplica o numero por 2
-
-    cmp r0, #1
-    beq fibo_um
-    cmp r0, #2
-    beq fibo_um
-
-    mov r1, #1
-    mov r2, #1
-    mov r4, #2
-
-    laco:
-        mov r3, r2
-        add r2, r2, r1
-        mov r1, r3
-
-        add r4, r4, #1
-        cmp r4, r0
-        beq fibo_dif_um
-
-    fibo_um:
+@ -- Calculo elemento da Sequencia de Fibonacci de número contido em r0
+        cmp r0, #3
+        bhs calculo
         mov r0, #1
-        bal fim
+        b fim_calculo
+calculo:
+        mov r1, #1            @ n
+        mov r2, #1            @ n - 1
+        mov r3, #3            @ variavel de controle
+loop_Fibo:
+        mov r4, r1
+        add r1, r1, r2
+        mov r2, r4
 
-    fibo_dif_um:
-        mov r0, r2
+        cmp r3, r0
+        moveq r0, r1
+        beq fim_calculo
+        add r3, r3, #1
+        b loop_Fibo
 
-    fim:
+fim_calculo:
  
 @ -- converte o resultado (em r0) em uma sequencia de caracteres '0' e '1' no buffer string.
 
@@ -101,6 +85,7 @@ one:
                               @ os argumentos da syscall write
         mov r7, #4            @ carrega o valor 4 para r7, indica o tipo da syscall
         svc 0x0               @ realiza uma chamada de sistema (syscall)
+        b _start@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
         mov r7, #1            @ carrega o valor 1 em r7, indicando a escolha da
                               @ syscall exit
@@ -109,7 +94,7 @@ one:
 .data @ Muda o ponto de montagem para a secao de dados
 
 
-string:	.asciz "0000000000000000\n"  @ a diretiva .asciz coloca a cadeia
-	                             @ de caracteres especificada como parametro
-	                             @ na memoria e concatena o valor zero, indicando
-	                             @ o termino da cadeia.
+string: .asciz "0000000000000000\n"  @ a diretiva .asciz coloca a cadeia
+                                 @ de caracteres especificada como parametro
+                                 @ na memoria e concatena o valor zero, indicando
+                                 @ o termino da cadeia.
