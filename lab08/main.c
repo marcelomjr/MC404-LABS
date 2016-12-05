@@ -6,18 +6,25 @@ void delay();
 void _start(void) 
 {
   unsigned int distances[16];
-   
-   set_speed_motors(55,0);
+
   /* While not close to anything. */
- /*  do {
-     set_speed_motors(25,25);
-     delay();
-     set_speed_motor(10,0);
-     delay();
-     set_speed_motors(25,10);
-     delay();
-     read_sonars(distances);
-   } while ( ( distances[4] > 1200 ) && ( distances[3] > 1200 ));*/
+  while(1)
+  {
+     set_speed_motors(55,55);
+      if (read_sonar(3) < 1200)
+      {
+          // vira parar a direita
+         set_speed_motors(0,63);
+         delay();
+      }
+      if (read_sonar(4) < 1200)
+      {
+          // vira parar a esquerda
+         set_speed_motors(63,0);
+         delay();
+      }
+
+   }
 }
 
 /* Spend some time doing nothing. */
